@@ -14,12 +14,15 @@ class Player:
         loose_moves = {'W': 'hacia arriba', 'S':'hacia abajo', 'A':'a la izquierda', 'D':'a la derecha'}
         loose_attacks = {'P': 'puño', 'K':'patada'}
         combo_names = self.attacks['names']
+        combo_damage = self.attacks['damages']
         combination = combo_list[0] + combo_list[1]
         i = 0
         this_move = f'{self.name}'
+        damage = 0
         if combination in self.attacks['combinations']:
             index = self.attacks['combinations'].index(combination)
             this_move += f' conecta un {combo_names[index]}'
+            damage = combo_damage[index]
         else:
             while i in range(0, len(combination)):                       
                 char = list(combination).pop(i)
@@ -33,8 +36,23 @@ class Player:
                         this_move += f' y conecta un golpe de {loose_attacks[char]}'
                     else:
                         this_move += f' conecta un golpe de {loose_attacks[char]}'
+                    index = self.attacks['combinations'].index(char)
+                    damage = combo_damage[index]
                 elif combination[i:len(combination)] in self.attacks['combinations']:
                     index = self.attacks['combinations'].index(combination)
-                    this_move += f' conecta un {combo_names[index]}'      
+                    this_move += f' conecta un {combo_names[index]}'    
+                    damage = combo_damage[index] 
                 i += 1
         print(this_move)
+        return damage
+
+    def update_energy(self, damage):
+        self.energy -= damage
+        return self.energy
+
+    def reset_energy(self):
+        self.energy = 6 
+        return self.energy
+
+        
+

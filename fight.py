@@ -22,7 +22,7 @@ class Fight:
         else:
             print('Comienza el jugador 2') 
             fighting_order = (self.pl2, self.pl1) 
-            fight_line_up = [[list(zip(self.pl2_moves['movimientos'], self.pl2_moves['golpes']))], [list(zip(self.pl1_moves['movimientos'], self.pl1_moves['golpes']))]]
+            fight_line_up = [list(zip(self.pl2_moves['movimientos'], self.pl2_moves['golpes'])), list(zip(self.pl1_moves['movimientos'], self.pl1_moves['golpes']))]
         print('*******')
         return fighting_order, fight_line_up
 
@@ -31,17 +31,17 @@ class Fight:
         i = 0
         player1 = fighting_order[0]
         player2 = fighting_order[1]
-        while i in range(0,4):
-            move1 = fight_line_up[0][i]
-            move2 = fight_line_up[1][i]
-            player1.attack(move1)
-            player2.attack(move2)
+        while i in range(0,len(fight_line_up[1])):
+            move1 = fight_line_up[0][i] if fight_line_up[0][i] else None
+            move2 = fight_line_up[1][i] if fight_line_up[1][i] else None
+            damage1 = player1.attack(move1)
+            player2.update_energy(damage1) 
+            print(f'energía {player2.name} = {player2.energy} ')   
+            damage2 = player2.attack(move2)
+            player1.update_energy(damage2)
+            print(f'energía {player1.name} = {player1.energy} ')  
             i += 1
         
-
-        # fight_narration = list(zip(fighting_order, fight_line_up))
-        # print(fight_narration(fighting_order, fight_line_up))
-        # return fight_narration
         
         
 
