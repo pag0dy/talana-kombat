@@ -1,5 +1,4 @@
 import time
-
 # Clase de pelea
 
 class Fight:
@@ -19,14 +18,6 @@ class Fight:
             :retorna fighting_order, lista con los jugadores en el órden en el que atacarán.
             :retorna fighting_line_up, lista con los movimientos y golpes de cada jugador, en el mismo órden de la lista anterior.
             '''
-        time.sleep(1)
-        print('Bienvenidos a...')
-        time.sleep(1)
-        print('--------------------------------------------------')
-        print('▀█▀ ▄▀█ █░░ ▄▀█ █▄░█ ▄▀█ █▄▀ █▀█ █▀▄▀█ █▄▄ ▄▀█ ▀█▀')
-        print('░█░ █▀█ █▄▄ █▀█ █░▀█ █▀█ █░█ █▄█ █░▀░█ █▄█ █▀█ ░█░')
-        print('--------------------------------------------------')
-
         # Se evalúa si esta es la primera pelea entre los jugadores o si es un desempate.
         if self.counter == 0:
             if len(self.pl1_moves['movimientos'][0] + self.pl1_moves['golpes'][0]) < len(self.pl2_moves['movimientos'][0] + self.pl2_moves['golpes'][0]):
@@ -110,8 +101,14 @@ class Fight:
         i = 0
         fight_turns = len(fight_line_up[0]) if len(fight_line_up[0]) > len(fight_line_up[1]) else len(fight_line_up[1])
         while i in range(0,fight_turns):
-            move1 = fight_line_up[0][i] if fight_line_up[0][i] else None
-            move2 = fight_line_up[1][i] if fight_line_up[1][i] else None
+            if i < len(fight_line_up[0]):
+                move1 = fight_line_up[0][i]
+            else:
+                move1 = ''
+            if i < len(fight_line_up[1]):
+                move2 = fight_line_up[1][i]
+            else:
+                move2 = ''
             time.sleep(1)
             damage1 = player1.attack(move1)
             player2.update_energy(damage1)  
@@ -119,6 +116,7 @@ class Fight:
             damage2 = player2.attack(move2)
             player1.update_energy(damage2)
             if player1.energy <= 0 and player2.energy > 0:
+                time.sleep(1)
                 print(f'{player2.name} es el ganador!')
                 time.sleep(1)
                 print('*********************************************************')

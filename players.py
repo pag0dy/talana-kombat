@@ -31,40 +31,44 @@ class Player:
         loose_attacks = {'P': 'puño', 'K':'patada'}
         combo_names = self.attacks['names']
         combo_damage = self.attacks['damages']
-        # Lista que combina la tupla de movimientos y golpes de cada turno
-        combination = combo_list[0] + combo_list[1]
-        this_move = f'{self.name}'
-        damage = 0
-        # Primero se intenta detectar una combinación de teclas que calce con uno de los ataques del jugador.
-        if combination in self.attacks['combinations']:
-            index = self.attacks['combinations'].index(combination)
-            this_move += f' conecta un {combo_names[index]}'
-            damage = combo_damage[index]
-        # Si la combinación de teclas no es un ataque, se separa la primera tecla y se evalúa como un movimiento independiente.
-        # Luego, se vuelve a evaluar si la combinación de teclas restante calza con un ataque del jugador. 
+        if combo_list == '':
+            damage = 0
         else:
-            i = 0
-            while i in range(0, len(combination)):                       
-                char = list(combination).pop(i)
-                if char in loose_moves:
-                    if len(this_move) > len(f'{self.name}'):
-                        this_move += f', luego {loose_moves[char]}'
-                    else:
-                        this_move += f' se mueve {loose_moves[char]}'
-                elif char in loose_attacks:
-                    if len(this_move) > len(f'{self.name}'):
-                        this_move += f' y conecta un golpe de {loose_attacks[char]}'
-                    else:
-                        this_move += f' conecta un golpe de {loose_attacks[char]}'
-                    index = self.attacks['combinations'].index(char)
-                    damage = combo_damage[index]
-                elif combination[i:len(combination)] in self.attacks['combinations']:
-                    index = self.attacks['combinations'].index(combination)
-                    this_move += f' conecta un {combo_names[index]}'    
-                    damage = combo_damage[index] 
-                i += 1
-        print(this_move)
+        # Lista que combina la tupla de movimientos y golpes de cada turno
+            combination = combo_list[0] + combo_list[1]
+            this_move = f'{self.name}'
+            damage = 0
+            # Primero se intenta detectar una combinación de teclas que calce con uno de los ataques del jugador.
+            if combination in self.attacks['combinations']:
+                index = self.attacks['combinations'].index(combination)
+                this_move += f' conecta un {combo_names[index]}'
+                damage = combo_damage[index]
+            # Si la combinación de teclas no es un ataque, se separa la primera tecla y se evalúa como un movimiento independiente.
+            # Luego, se vuelve a evaluar si la combinación de teclas restante calza con un ataque del jugador. 
+            else:
+                i = 0
+                while i in range(0, len(combination)):                       
+                    char = list(combination).pop(i)
+                    if char in loose_moves:
+                        if len(this_move) > len(f'{self.name}'):
+                            this_move += f', luego {loose_moves[char]}'
+                        else:
+                            this_move += f' se mueve {loose_moves[char]}'
+                    elif char in loose_attacks:
+                        if len(this_move) > len(f'{self.name}'):
+                            this_move += f' y conecta un golpe de {loose_attacks[char]}'
+                        else:
+                            this_move += f' conecta un golpe de {loose_attacks[char]}'
+                        index = self.attacks['combinations'].index(char)
+                        damage = combo_damage[index]
+                    elif combination[i:len(combination)] in self.attacks['combinations']:
+                        index = self.attacks['combinations'].index(combination)
+                        this_move += f' conecta un {combo_names[index]}'    
+                        damage = combo_damage[index] 
+                    i += 1
+            print(this_move)
         return damage
+        
 
 
     def update_energy(self, damage):
